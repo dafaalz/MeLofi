@@ -148,6 +148,67 @@ input[type="submit"]:hover {
     text-align: center;
 }
 
+/* Song card styling */
+.song-card {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 500px; /* Fixed height for consistent alignment */
+    transition: box-shadow 0.2s ease;
+}
+.song-card:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.song-card img.album-cover {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+.song-info {
+    text-align: center;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.song-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #111111;
+}
+
+.song-info p {
+    font-size: 1rem;
+    color: #555555;
+    margin: 0.15rem 0;
+}
+
+/* Action buttons row */
+.song-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.song-actions .button {
+    flex: 1;
+    text-align: center;
+}
+
 /* Animation */
 @keyframes fadeSlide {
     from {

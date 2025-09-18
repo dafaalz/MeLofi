@@ -5,11 +5,6 @@ if (!isset($_SESSION['username']) OR ($_SESSION['level_access'] != 'admin')) {
     exit();
 }
 
-if ($_SESSION['level_access'] == 'user' ) {
-    header("Location: index.php?error=akses+ditolak");
-    exit();
-}
-
 $query = "SELECT * FROM lagu";
 $result = mysqli_query($connect, $query);
 $tracks = [];
@@ -59,7 +54,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <input type="text" id="album" name="album" required>
                 </div>
                 <div class="form-group">
-                    <label for="cover">Cover Album</label>
+                    <label for="cover">Cover Album (.png)</label>
                     <input type="file" id="cover" name="cover" accept="image/*" required>
                 </div>
                 <div class="form-group">
@@ -74,46 +69,32 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         <section id="songtables">
             <h2>Daftar Lagu</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Judul</th>
-                        <th>Artis</th>
-                        <th>Album</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    mysqli_data_seek($result, 0);
-                    $i = 0;
-                    while($row = mysqli_fetch_assoc($result)) {
-                        $judul = htmlspecialchars($row['judul']);
-                        $artis = htmlspecialchars($row['artis']);
-                        $album = htmlspecialchars($row['album']);
-                        $cover = htmlspecialchars($row['cover_album']);
-                        $filename = htmlspecialchars($row['filename']);
-                        $laguId = $row['id_lagu'];
-                        $audioId = "audio_" . $laguId;
-                        echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row["judul"]) . "</td>";
-                            echo "<td>" . htmlspecialchars($row["artis"]) . "</td>";
-                            echo "<td>";
-                                echo "<img src='cover/" . htmlspecialchars($row["cover_album"]). "' alt='Cover Album " . htmlspecialchars($row["album"]) . "' class='album-cover'>";
-                                echo "<p>" . htmlspecialchars($row["album"]) . "</p>";
-                            echo "</td>";
-                            echo "<td class='actions'>";
-                            echo "<audio id='$audioId' src='songs/$filename' aria-label='Audio preview for " . htmlspecialchars($row["judul"]) . "'></audio>";
-                            echo "<button class='button primary' onclick=\"playPauseTrack('$audioId', this)\">Play</button>";
-                            echo "<a class='button secondary' href='edit.php?id=$laguId'>Edit</a>";
-                            echo "<a class='button danger' href='delete.php?id=$laguId'>Hapus</a>";
-                            echo "</td>";
-                        echo "</tr>";
-                        $i++;
-                    }
-                    ?>
-                </tbody>
-            </table>
+            <?php
+            mysqli_data_seek($result, 0);
+            while($row = mysqli_fetch_assoc($result)) {
+                $judul = htmlspecialchars($row['judul']);
+                $artis = htmlspecialchars($row['artis']);
+                $album = htmlspecialchars($row['album']);
+                $cover = htmlspecialchars($row['cover_album']);
+                $filename = htmlspecialchars($row['filename']);
+                $laguId = $row['id_lagu'];
+                $audioId = "audio_" . $laguId;
+                echo "<div class='song-card'>";
+                    echo "<img src='cover/$cover' alt='Cover Album $album' class='album-cover'>";
+                    echo "<div class='song-info'>";
+                        echo "<p><strong>Judul:</strong> $judul</p>";
+                        echo "<p><strong>Artis:</strong> $artis</p>";
+                        echo "<p><strong>Album:</strong> $album</p>";
+                    echo "</div>";
+                    echo "<div class='song-actions'>";
+                        echo "<audio id='$audioId' src='songs/$filename' aria-label='Audio preview for $judul' style='display:none;'></audio>";
+                        echo "<button class='button primary' onclick=\"playPauseTrack('$audioId', this)\">Play</button> ";
+                        echo "<a class='button secondary' href='edit.php?id=$laguId'>Edit</a> ";
+                        echo "<a class='button danger' href='delete.php?id=$laguId'>Hapus</a>";
+                    echo "</div>";
+                echo "</div>";
+            }
+            ?>
         </section>
     </main>
     <script>

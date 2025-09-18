@@ -4,8 +4,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')  {
     $judul = $_POST['judul'];
     $artis = $_POST['artis'];
     $album = $_POST['album'];
-    $cover = $_POST['cover'];
-    $file_lagu = $_POST['filename'];
+    $cover = $_FILES['cover'];
+    $file_lagu = $_FILES['filename'];
 
     if($cover['error'] == 0) {
         $nama_cover = basename($album) . ".jpg";
@@ -43,3 +43,4 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')  {
         echo "Terjadi kesalahan saat upload file.";
     }
 }
+?>

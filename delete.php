@@ -1,12 +1,9 @@
 <?php
-
-use function PHPSTORM_META\map;
-
  include 'connect.php';
 
 session_start();
 
-if(!isset($_SESSION['access']) OR $_SESSION['access'] != 1) {
+if(!isset($_SESSION['level_access']) OR $_SESSION['level_access'] != 'admin') {
     header("Location: index.php?error=akses+ditolak");
     exit();
 }
