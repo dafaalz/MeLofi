@@ -45,62 +45,62 @@ while($row = mysqli_fetch_assoc($result)) {
         </div>
 
         <div class="player">
-            <div class="detail">
+            <div class="player-left">
                 <div class="track-art"></div>
-                <div class="track-name"></div>
-                <div class="track-artist"></div>
+                <div class="track-details">
+                    <div class="track-name">Judul Lagu</div>
+                    <div class="track-artist">Artis</div>
+                </div>
             </div>
-            <div class="buttons">
-                <button class="button" onclick="prevClick()">Prev</button>
-                <button class="button primary" id="playPause" onclick="playPauseTrack()">Play</button>
-                <button class="button" onclick="nextTrack">Next</button>
-            </div>
-            <input class="slider" type="range" id="seek_slider" min="0" max="100" value="0">
-            <input class="slider" type="range" id="vol_slider" min="0" max="100" value="100">
-            <div class="controls">
-                <button class="button" onclick="shuffleQueue()">Shuffle</button>
-                <button class="button" onclick="clearQueue()">Clear Queue</button>
-            </div>      
 
-            <div id="queue">
-                <h3>Queue</h3>
-                <ul id="queueList"></ul>
+            <div class="player-center">
+                <div class="controls">
+                    <button class="button" onclick="prevClick()">⏮</button>
+                    <button class="button primary" id="playPause" onclick="playPauseTrack()">▶️</button>
+                    <button class="button" onclick="nextTrack()">⏭</button>
+                </div>
+                <div class="sliders">
+                    <input class="slider" type="range" id="seek_slider" min="0" max="100" value="0">
+                    <input class="slider" type="range" id="vol_slider" min="0" max="100" value="100">
+                </div>
+            </div>
+
+            <div class="player-right">
+                <div class="player-actions">
+                    <button class="button" onclick="shuffleQueue()">🔀 Shuffle</button>
+                    <button class="button" onclick="clearQueue()">🗑 Clear</button>
+                </div>
+                <div id="queue">
+                    <h3>Queue</h3>
+                    <ul id="queueList"></ul>
+                </div>
             </div>
         </div>
 
         <div id="songtables">
             <h2>Daftar Lagu</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Judul</th>
-                        <th>Artis</th>
-                        <th>Album</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $i = 0;
-                    foreach ($tracks as $row) {
-                        echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row["judul"]) . "</td>";
-                            echo "<td>" . htmlspecialchars($row["artis"]) . "</td>";
-                            echo "<td>";
-                                echo "<img src='" . htmlspecialchars($row["cover"]) . "' style='height: 50px;'>";
-                                echo "<p>" . htmlspecialchars($row["album"]) . "</p>";
-                            echo "</td>";
-                            echo "<td>";
-                                echo "<button class=\"button\" onclick=\"loadTrack($i); audio.play()\">Play</button>";
-                                echo "<button class=\"button\" onclick=\"addToQueue($i); audio.play()\">Add To Queue</button>";
-                            echo "</td>";
-                        echo "</tr>";
-                        $i++;
-                    }
-                    
-                    ?>
-                </tbody>
-            </table>
+            <div class="song-cards-container">
+            <?php
+            $i = 0;
+            foreach ($tracks as $row) {
+            ?>
+                <div class="song-card">
+                    <img class="album-cover" src="<?php echo htmlspecialchars($row['cover']); ?>" alt="Cover">
+                    <div class="song-info">
+                        <p><strong>Judul:</strong> <?php echo htmlspecialchars($row['judul']); ?></p>
+                        <p><strong>Artis:</strong> <?php echo htmlspecialchars($row['artis']); ?></p>
+                        <p><strong>Album:</strong> <?php echo htmlspecialchars($row['album']); ?></p>
+                    </div>
+                    <div class="song-actions">
+                        <button class="button" onclick="loadTrack(<?php echo $i; ?>); audio.play()">Play</button>
+                        <button class="button" onclick="addToQueue(<?php echo $i; ?>); audio.play()">Add To Queue</button>
+                    </div>
+                </div>
+            <?php
+                $i++;
+            }
+            ?>
+            </div>
         </div>
 
         <button class="button primary"><a href="store.php">Beli Lagu</a></button>

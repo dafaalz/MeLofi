@@ -1,7 +1,7 @@
 <?php include 'connect.php';
 session_start();
 if (!isset($_SESSION['username']) OR ($_SESSION['level_access'] != 'admin')) {
-    header("Location: index.php?error=login+gagal");
+    header("Location: index.php?error=login+required");
     exit();
 }
 
