@@ -65,6 +65,13 @@ while($row = mysqli_fetch_assoc($result)) {
                     <input class="slider" type="range" id="seek_slider" min="0" max="100" value="0">
                     <input class="slider" type="range" id="vol_slider" min="0" max="100" value="100">
                 </div>
+                <div class="time-display">
+                    <span id="current_time">0:00</span> / <span id="total_duration">0:00</span>
+                </div>
+                <div class="secondary-controls">
+                    <button class="button" onclick="seek(-15)">-15s</button>
+                    <button class="button" onclick="seek(15)">+15s</button>
+                </div>
             </div>
 
             <div class="player-right">
@@ -130,10 +137,10 @@ while($row = mysqli_fetch_assoc($result)) {
         function playPauseTrack() {
             if (audio.src === "") loadTrack(trackIndex);
             if (audio.paused) {
-                document.getElementById("playPause").innerHTML="Pause";
+                document.getElementById("playPause").innerHTML="⏸️";
                 audio.play();
             } else {
-                document.getElementById("playPause").innerHTML="Play";
+                document.getElementById("playPause").innerHTML="▶️";
                 audio.pause();
             }
         }
@@ -213,6 +220,23 @@ while($row = mysqli_fetch_assoc($result)) {
 
             audio.addEventListener("ended", nextTrack);
         };
+
+        function seek(seconds) {
+            audio.currentTime += seconds;
+        }
+
+        audio.addEventListener('timeupdate', function() {
+            document.getElementById('current_time').textContent = formatTime(audio.currentTime);
+            if (!isNaN(audio.duration)) {
+                document.getElementById('total_duration').textContent = formatTime(audio.duration);
+            }
+        });
+
+        function formatTime(seconds) {
+            let min = Math.floor(seconds / 60);
+            let sec = Math.floor(seconds % 60);
+            return min + ":" + (sec < 10 ? "0" : "") + sec;
+        }
     </script>
 </body>
 </html>

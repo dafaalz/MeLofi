@@ -47,6 +47,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
         <section id="songtables">
             <h2>Daftar Lagu</h2>
+            <div class="song-cards-container">
             <?php
             mysqli_data_seek($result, 0);
             while($row = mysqli_fetch_assoc($result)) {
@@ -73,6 +74,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 echo "</div>";
             }
             ?>
+            </div>
         </section>
     </main>
     <script>
