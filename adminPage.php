@@ -5,14 +5,17 @@ if (!isset($_SESSION['username']) OR ($_SESSION['level_access'] != 'admin')) {
     exit();
 }
 
-$query = "SELECT * FROM lagu";
+$query = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, ar.nama_artis, a.cover_album
+          FROM lagu l
+          JOIN album a ON l.id_album = a.id_album
+          JOIN artis ar ON a.id_artis = ar.id_artis";
 $result = mysqli_query($connect, $query);
 $tracks = [];
 
 while ($row = mysqli_fetch_assoc($result)) {
     $tracks[] = [
         "judul" => $row["judul"],
-        "artis" => $row["artis"],
+        "artis" => $row["nama_artis"],
         "url" => $row["filename"],
         "cover" => $row["cover_album"],
     ];
@@ -38,34 +41,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         </div>
     </header>
     <main>
-        <section id="upload">
-            <h2>Upload Lagu</h2>
-            <form action="upload.php" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="judul">Judul Lagu</label>
-                    <input type="text" id="judul" name="judul" required>
-                </div>
-                <div class="form-group">
-                    <label for="artis">Artis</label>
-                    <input type="text" id="artis" name="artis" required>
-                </div>
-                <div class="form-group">
-                    <label for="album">Album</label>
-                    <input type="text" id="album" name="album" required>
-                </div>
-                <div class="form-group">
-                    <label for="cover">Cover Album (.png)</label>
-                    <input type="file" id="cover" name="cover" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <label for="filename">File Lagu (.mp3)</label>
-                    <input type="file" id="filename" name="filename" accept="audio/mp3" required>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Upload Lagu" class="button primary">
-                </div>
-            </form>
-        </section>
+        <div class="admin-actions">
+            <a href="manageData.php" class="button primary" style="text-align: center;">Kelola Data <br> (Artis, Album, Lagu)</a>
+        </div>
 
         <section id="songtables">
             <h2>Daftar Lagu</h2>
@@ -73,14 +51,14 @@ while ($row = mysqli_fetch_assoc($result)) {
             mysqli_data_seek($result, 0);
             while($row = mysqli_fetch_assoc($result)) {
                 $judul = htmlspecialchars($row['judul']);
-                $artis = htmlspecialchars($row['artis']);
-                $album = htmlspecialchars($row['album']);
+                $artis = htmlspecialchars($row['nama_artis']);
+                $album = htmlspecialchars($row['nama_album']);
                 $cover = htmlspecialchars($row['cover_album']);
                 $filename = htmlspecialchars($row['filename']);
                 $laguId = $row['id_lagu'];
                 $audioId = "audio_" . $laguId;
                 echo "<div class='song-card'>";
-                    echo "<img src='cover/$cover' alt='Cover Album $album' class='album-cover'>";
+                    echo "<img src='$cover' alt='Cover Album $album' class='album-cover'>";
                     echo "<div class='song-info'>";
                         echo "<p><strong>Judul:</strong> $judul</p>";
                         echo "<p><strong>Artis:</strong> $artis</p>";

@@ -9,8 +9,10 @@ if(!isset($_SESSION['user_id'])) {
 
 $user = intval($_SESSION['user_id']);
 
-$query = "SELECT l.id_lagu, l.judul, l.artis, l.album, l.filename, l.cover_album
+$query = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, a.cover_album, r.nama_artis
           FROM lagu l
+          JOIN album a ON l.id_album = a.id_album
+          JOIN artis r ON a.id_artis = r.id_artis
           JOIN transaksi t ON l.id_lagu = t.lagu_id
           WHERE t.user_id = $user";
 
@@ -21,10 +23,10 @@ $tracks = [];
 while($row = mysqli_fetch_assoc($result)) {
     $tracks[] = [
         "judul" => $row["judul"],
-        "artis" => $row["artis"],
-        "album" => $row["album"],
+        "artis" => $row["nama_artis"],
+        "album" => $row["nama_album"],
         "url" => "songs/" . $row["filename"],
-        "cover" => "cover/" .$row["cover_album"]
+        "cover" => $row["cover_album"]
     ];
 }
 
@@ -103,8 +105,8 @@ while($row = mysqli_fetch_assoc($result)) {
             </div>
         </div>
 
-        <button class="button primary"><a href="store.php">Beli Lagu</a></button>
-        <button class="button primary"><a href="logout.php">Log Out</a></button>
+        <button class="button primary" onclick="window.location.href='store.php'">Beli Lagu</button>
+        <button class="button primary" onclick="window.location.href='logout.php'">Log Out</button>
     </div>
 
     <script>
@@ -205,7 +207,8 @@ while($row = mysqli_fetch_assoc($result)) {
             volSlider.value = 100;
             audio.volume = 1;
             volSlider.addEventListener("input", () => {
-                audio.volume = volSlider.value / 100;
+                const fraction = volSlider.value / 100;
+                audio.volume = Math.pow(fraction, 2); // logarithmic perceptual scaling
             });
 
             audio.addEventListener("ended", nextTrack);

@@ -10,6 +10,10 @@ $id = $_GET['id'];
 $query = "SELECT * FROM lagu WHERE id_lagu = $id";
 $result = mysqli_query($connect, $query);
 $row = mysqli_fetch_assoc($result);
+
+// Fetch albums with artis names for dropdown
+$album_query = "SELECT album.id_album, album.nama_album, artis.nama_artis FROM album JOIN artis ON album.id_artis = artis.id_artis";
+$album_result = mysqli_query($connect, $album_query);
 ?>
 
 <html>
@@ -24,10 +28,14 @@ $row = mysqli_fetch_assoc($result);
                 <input type="hidden" name="id" value="<?php echo $row['id_lagu'];?>" required>
                 <label>Judul</label>
                 <input type="text" name="judul" value="<?php echo $row['judul'];?>" required>
-                <label>Artis</label>
-                <input type="text" name="artis" value="<?php echo $row['artis'];?>" required>
                 <label>Album</label>
-                <input type="text" name="album" value="<?php echo $row['album'];?>" required>
+                <select name="id_album" required>
+                    <?php while($album = mysqli_fetch_assoc($album_result)) { ?>
+                        <option value="<?php echo $album['id_album']; ?>" <?php if ($album['id_album'] == $row['id_album']) echo 'selected'; ?>>
+                            <?php echo $album['nama_album'] . ' - ' . $album['nama_artis']; ?>
+                        </option>
+                    <?php } ?>
+                </select>
                 <input type="submit" value="Simpan Perubahan">
             </form>
             <p><a href="adminPage.php">Kembali ke Admin Page</a></p>

@@ -33,31 +33,36 @@ $user_id = $_SESSION['user_id'];
     }
 </script>
 <body>
-    <h2>Toko Musik - Pilih Lagu untuk Dibelli <button class="button primary"> <a href="library.php">Kembali ke Library</a></button> </h2>
+    <h2>Toko Musik - Pilih Lagu untuk Dibelli <button class="button primary" onclick="window.location.href='library.php'">Kembali ke Library</button> </h2>
     
     <div class="song-cards-container">
         <?php
-        $query = "SELECT * FROM lagu WHERE id_lagu NOT IN (
-        SELECT lagu_id FROM transaksi WHERE user_id = $user_id)";
+        $query = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, a.cover_album, ar.nama_artis 
+                  FROM lagu l 
+                  JOIN album a ON l.id_album = a.id_album 
+                  JOIN artis ar ON a.id_artis = ar.id_artis 
+                  WHERE l.id_lagu NOT IN (
+                    SELECT lagu_id FROM transaksi WHERE user_id = $user_id
+                  )";
         $result = mysqli_query($connect, $query);
         while($row = mysqli_fetch_assoc($result)) {
             $judul = htmlspecialchars($row['judul']);
-            $artis = htmlspecialchars($row['artis']);
-            $album = htmlspecialchars($row['album']);
+            $artis = htmlspecialchars($row['nama_artis']);
+            $album = htmlspecialchars($row['nama_album']);
             $cover = htmlspecialchars($row['cover_album']);
-            $filename = htmlspecialchars($row['filename']);
+            $filename = "songs/" . htmlspecialchars($row['filename']);
             $laguId = $row['id_lagu'];
             $audioId = "audio_" . $laguId;
 
             echo "<div class='song-card'>";
-                echo "<img class='album-cover' src='cover/$cover' alt='Cover Album'>";
+                echo "<img class='album-cover' src='$cover' alt='Cover Album'>";
                 echo "<div class='song-info'>";
                     echo "<p><strong>Judul:</strong> $judul</p>";
                     echo "<p><strong>Artis:</strong> $artis</p>";
                     echo "<p><strong>Album:</strong> $album</p>";
                 echo "</div>";
                 echo "<div class='song-actions'>";
-                    echo "<audio id='$audioId' src='songs/$filename'></audio>";
+                    echo "<audio id='$audioId' src='$filename'></audio>";
                     echo "<button class='button primary' onclick=\"playPauseTrack('$audioId', this)\">Play</button>";
                     echo "<form action='buy.php' method='POST' style='display:inline-block; margin-left:10px;'>";
                         echo "<input type='hidden' name='lagu_id' value='$laguId'>";

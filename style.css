@@ -9,7 +9,7 @@
 body {
     background: linear-gradient(160deg, #fefcf9, #f7f7f7);
     color: #111111;
-    min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     padding: 2rem;
     display: block;

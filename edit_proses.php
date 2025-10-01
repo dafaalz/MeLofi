@@ -8,10 +8,9 @@ if(!isset($_SESSION['username']) || $_SESSION['level_access'] != 'admin') {
 
 $id = $_POST['id'];
 $judul = $_POST['judul'];
-$artis = $_POST['artis'];
-$album = $_POST['album'];
+$id_album = $_POST['id_album'];
 
-$query = "UPDATE lagu SET judul='$judul', artis='$artis',album='$album' WHERE id_lagu='$id'";
+$query = "UPDATE lagu SET judul='$judul', id_album='$id_album' WHERE id_lagu='$id'";
 mysqli_query($connect, $query);
 
 header("Location: adminPage.php");
