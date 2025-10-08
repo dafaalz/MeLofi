@@ -1,3 +1,17 @@
+<?php
+include 'connect.php';
+session_start();
+if (!isset($_SESSION['username']) OR ($_SESSION['level_access'] != 'admin')) {
+    header("Location: index.php?error=login+required");
+    exit();
+}
+
+$artis = mysqli_query($connect, "SELECT * FROM artis");
+
+$album = mysqli_query($connect, "SELECT album.*, artis.nama_artis 
+                                 FROM album
+                                 JOIN artis ON album.id_artis = artis.id_artis");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +65,6 @@
         }
         
         input[type="text"],
-        input[type="file"],
         select,
         textarea {
             width: 100%;
@@ -66,7 +79,6 @@
         }
         
         input[type="text"]:focus,
-        input[type="file"]:focus,
         select:focus,
         textarea:focus {
             border-color: #111111;
@@ -141,33 +153,70 @@
             border: 1px solid #f5c6cb;
         }
         
-        /* File input styling */
-        .file-input-container {
+        /* FIXED File input styling */
+        .file-input-wrapper {
             position: relative;
-            display: inline-block;
+            display: block;
             width: 100%;
         }
         
-        .file-input-container input[type="file"] {
+        .file-input-wrapper input[type="file"] {
+            width: 100%;
             padding: 0.75rem 1rem;
-            background: #fafafa;
             border: 1px solid #eaeaea;
             border-radius: 10px;
+            background-color: #fafafa;
+            color: #555555;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-size: 0.95rem;
             cursor: pointer;
         }
         
-        .file-input-container::after {
-            content: "Browse";
+        .file-input-wrapper input[type="file"]:focus {
+            border-color: #111111;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+        }
+        
+        /* Custom file input appearance */
+        .file-input-wrapper::after {
+            content: "Browse Files";
             position: absolute;
-            right: 10px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: #f5f5f5;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             font-size: 0.85rem;
             color: #555555;
             pointer-events: none;
+            border: 1px solid #eaeaea;
+        }
+        
+        /* Hide default file input text */
+        .file-input-wrapper input[type="file"]::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        
+        .file-input-wrapper input[type="file"]::before {
+            content: 'Select file';
+            display: inline-block;
+            background: transparent;
+            border: none;
+            padding: 0;
+            outline: none;
+            white-space: nowrap;
+            cursor: pointer;
+            color: transparent;
+        }
+        
+        /* File name display */
+        .file-name-display {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #555555;
+            font-style: italic;
         }
     </style>
 </head>
@@ -185,6 +234,47 @@
     <main>
         <div class="manage-data-container">
             <section class="form-section">
+                <h2>Tambah Lagu</h2>
+                <form action="upload_lagu.php" method="post" enctype="multipart/form-data" id="laguForm">
+                    <div class="form-group">
+                        <label for="selectArtis">Pilih Artis</label>
+                        <select id="selectArtis" name="id_artis" required>
+                            <option value="">-- Pilih Artis --</option>
+                            <?php 
+                            mysqli_data_seek($artis, 0); 
+                            while($ar = mysqli_fetch_assoc($artis)) { ?>
+                                <option value="<?= $ar['id_artis'] ?>"><?= htmlspecialchars($ar['nama_artis']) ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="selectAlbum">Pilih Album</label>
+                        <select id="selectAlbum" name="id_album" required>
+                            <option value="">-- Pilih Album --</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="judul">Judul Lagu</label>
+                        <input type="text" id="judul" name="judul" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="filename">File Lagu (.mp3)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="filename" name="filename" accept="audio/mp3" required>
+                        </div>
+                        <div class="file-name-display" id="filename-display">No file chosen</div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <input type="submit" value="Tambah Lagu" class="button primary">
+                    </div>
+                </form>
+            </section>
+
+            <section class="form-section">
                 <h2>Tambah Artis</h2>
                 <form action="upload_artis.php" method="post" enctype="multipart/form-data" id="artisForm">
                     <div class="form-group">
@@ -194,9 +284,10 @@
                     
                     <div class="form-group">
                         <label for="foto_profil">Foto Profil</label>
-                        <div class="file-input-container">
+                        <div class="file-input-wrapper">
                             <input type="file" id="foto_profil" name="foto_profil" accept="image/*">
                         </div>
+                        <div class="file-name-display" id="foto_profil-display">No file chosen</div>
                     </div>
                     
                     <div class="form-group">
@@ -217,7 +308,9 @@
                         <label for="id_artis_album">Pilih Artis</label>
                         <select id="id_artis_album" name="id_artis" required>
                             <option value="">-- Pilih Artis --</option>
-                            <?php while($ar = mysqli_fetch_assoc($artis)) { ?>
+                            <?php 
+                            mysqli_data_seek($artis, 0);
+                            while($ar = mysqli_fetch_assoc($artis)) { ?>
                                 <option value="<?= $ar['id_artis'] ?>"><?= htmlspecialchars($ar['nama_artis']) ?></option>
                             <?php } ?>
                         </select>
@@ -230,9 +323,10 @@
                     
                     <div class="form-group">
                         <label for="cover_album">Cover Album</label>
-                        <div class="file-input-container">
+                        <div class="file-input-wrapper">
                             <input type="file" id="cover_album" name="cover_album" accept="image/*">
                         </div>
+                        <div class="file-name-display" id="cover_album-display">No file chosen</div>
                     </div>
                     
                     <div class="form-group">
@@ -242,44 +336,6 @@
                     
                     <div class="form-actions">
                         <input type="submit" value="Tambah Album" class="button primary">
-                    </div>
-                </form>
-            </section>
-
-            <section class="form-section">
-                <h2>Tambah Lagu</h2>
-                <form action="upload_lagu.php" method="post" enctype="multipart/form-data" id="laguForm">
-                    <div class="form-group">
-                        <label for="selectArtis">Pilih Artis</label>
-                        <select id="selectArtis" name="id_artis" required>
-                            <option value="">-- Pilih Artis --</option>
-                            <?php mysqli_data_seek($artis, 0); while($ar = mysqli_fetch_assoc($artis)) { ?>
-                                <option value="<?= $ar['id_artis'] ?>"><?= htmlspecialchars($ar['nama_artis']) ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="selectAlbum">Pilih Album</label>
-                        <select id="selectAlbum" name="id_album" required>
-                            <option value="">-- Pilih Album --</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="judul">Judul Lagu</label>
-                        <input type="text" id="judul" name="judul" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="filename">File Lagu (.mp3)</label>
-                        <div class="file-input-container">
-                            <input type="file" id="filename" name="filename" accept="audio/mp3" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <input type="submit" value="Tambah Lagu" class="button primary">
                     </div>
                 </form>
             </section>
@@ -322,7 +378,6 @@
         // Form validation and feedback
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', function(e) {
-                // Basic validation - you can enhance this further
                 const requiredFields = form.querySelectorAll('[required]');
                 let valid = true;
                 
@@ -342,15 +397,23 @@
             });
         });
         
-        // File input feedback
+        // File input feedback - UPDATED
         document.querySelectorAll('input[type="file"]').forEach(input => {
             input.addEventListener('change', function() {
                 const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-                const container = this.closest('.file-input-container');
+                const displayElement = document.getElementById(this.id + '-display');
                 
-                // Update the pseudo-element text if needed
-                if (container) {
-                    container.setAttribute('data-file', fileName);
+                if (displayElement) {
+                    displayElement.textContent = fileName;
+                }
+                
+                // Visual feedback
+                if (this.files[0]) {
+                    this.style.borderColor = '#4CAF50';
+                    this.style.backgroundColor = '#f8fff8';
+                } else {
+                    this.style.borderColor = '#eaeaea';
+                    this.style.backgroundColor = '#fafafa';
                 }
             });
         });

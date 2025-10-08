@@ -553,3 +553,379 @@ input[type="submit"]:hover {
 #seek_slider {
     width: 100%;
 }
+
+/* ======= library.php inline CSS moved here ======= */
+/* Grid Layout */
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 16px;
+    height: 85vh;
+    margin-top: 1rem;
+}
+
+.div1 {
+    grid-column: span 3 / span 3;
+    grid-row: span 2 / span 2;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.div2 {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.div3 {
+    grid-column: span 5 / span 5;
+    grid-row: span 3 / span 3;
+    grid-row-start: 3;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow-y: auto;
+}
+
+/* Player adjustments for new layout */
+.player {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.player-main {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.player-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.track-art {
+    width: 120px;
+    height: 120px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    object-fit: cover;
+    background-position: center;
+    background-size: cover;
+    flex-shrink: 0;
+}
+
+.track-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.track-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 0.25rem;
+}
+
+.track-artist {
+    font-size: 1.2rem;
+    color: #555555;
+}
+
+.player-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 2;
+    gap: 1rem;
+}
+
+.player-center .controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.player-center .controls .button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.player-center .sliders {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.player-center .slider {
+    flex: 1;
+    cursor: pointer;
+}
+
+.time-display {
+    font-size: 0.9rem;
+    color: #555555;
+}
+
+.secondary-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.secondary-controls .button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+/* Queue adjustments for new layout */
+.queue-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.queue-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+}
+
+.queue-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#queue {
+    flex: 1;
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+#queue ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#queue li {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #333333;
+    border-bottom: 1px solid #eaeaea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#queue li:last-child {
+    border-bottom: none;
+}
+
+.queue-item-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.queue-item-actions button {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+}
+
+/* Song cards adjustments for new layout */
+.song-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.song-card {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    min-height: 380px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.song-card:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.song-card img.album-cover {
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+.song-info {
+    text-align: center;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.song-info p {
+    font-size: 0.95rem;
+    color: #555555;
+    margin: 0.25rem 0;
+    line-height: 1.4;
+}
+
+.song-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.song-actions .button {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Header and button adjustments */
+#header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #111111;
+}
+
+.page-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Slider styling */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5px;
+    border-radius: 5px;
+    background: #eaeaea;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #111111;
+    cursor: pointer;
+}
+
+#seek_slider {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .parent {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        height: auto;
+        gap: 1rem;
+    }
+    
+    .div1, .div2, .div3 {
+        grid-column: 1;
+        grid-row: auto;
+    }
+    
+    .div1 {
+        grid-row: 1;
+    }
+    
+    .div2 {
+        grid-row: 2;
+    }
+    
+    .div3 {
+        grid-row: 3;
+    }
+    
+    .player-main {
+        flex-direction: column;
+    }
+    
+    .player-left {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .track-art {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .song-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .song-actions {
+        flex-direction: column;
+    }
+    
+    .song-actions .button {
+        min-width: 100%;
+    }
+}

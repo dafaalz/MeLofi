@@ -46,74 +46,86 @@ while($row = mysqli_fetch_assoc($result)) {
             <h2>Library</h2>
         </div>
 
-        <div class="player">
-            <div class="player-left">
-                <div class="track-art"></div>
-                <div class="track-details">
-                    <div class="track-name">Judul Lagu</div>
-                    <div class="track-artist">Artis</div>
+        <div class="parent">
+            <div class="div1">
+                <div class="player">
+                    <div class="player-main">
+                        <div class="player-left">
+                            <div class="track-art"></div>
+                            <div class="track-details">
+                                <div class="track-name">Judul Lagu</div>
+                                <div class="track-artist">Artis</div>
+                            </div>
+                        </div>
+
+                        <div class="player-center">
+                            <div class="controls">
+                                <button class="button" onclick="prevClick()">⏮</button>
+                                <button class="button primary" id="playPause" onclick="playPauseTrack()">▶️</button>
+                                <button class="button" onclick="nextTrack()">⏭</button>
+                            </div>
+                            <div class="sliders">
+                                <input class="slider" type="range" id="seek_slider" min="0" max="100" value="0">
+                                <input class="slider" type="range" id="vol_slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="time-display">
+                                <span id="current_time">0:00</span> / <span id="total_duration">0:00</span>
+                            </div>
+                            <div class="secondary-controls">
+                                <button class="button" onclick="seek(-15)">-15s</button>
+                                <button class="button" onclick="seek(15)">+15s</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="player-center">
-                <div class="controls">
-                    <button class="button" onclick="prevClick()">⏮</button>
-                    <button class="button primary" id="playPause" onclick="playPauseTrack()">▶️</button>
-                    <button class="button" onclick="nextTrack()">⏭</button>
-                </div>
-                <div class="sliders">
-                    <input class="slider" type="range" id="seek_slider" min="0" max="100" value="0">
-                    <input class="slider" type="range" id="vol_slider" min="0" max="100" value="100">
-                </div>
-                <div class="time-display">
-                    <span id="current_time">0:00</span> / <span id="total_duration">0:00</span>
-                </div>
-                <div class="secondary-controls">
-                    <button class="button" onclick="seek(-15)">-15s</button>
-                    <button class="button" onclick="seek(15)">+15s</button>
+            <div class="div2">
+                <div class="queue-container">
+                    <div class="queue-header">
+                        <h3>Queue</h3>
+                        <div class="queue-actions">
+                            <button class="button" onclick="shuffleQueue()">🔀 Shuffle</button>
+                            <button class="button" onclick="clearQueue()">🗑 Clear</button>
+                        </div>
+                    </div>
+                    <div id="queue">
+                        <ul id="queueList"></ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="player-right">
-                <div class="player-actions">
-                    <button class="button" onclick="shuffleQueue()">🔀 Shuffle</button>
-                    <button class="button" onclick="clearQueue()">🗑 Clear</button>
-                </div>
-                <div id="queue">
-                    <h3>Queue</h3>
-                    <ul id="queueList"></ul>
+            <div class="div3">
+                <h2>Daftar Lagu</h2>
+                <div class="song-cards-container">
+                <?php
+                $i = 0;
+                foreach ($tracks as $row) {
+                ?>
+                    <div class="song-card">
+                        <img class="album-cover" src="<?php echo htmlspecialchars($row['cover']); ?>" alt="Cover">
+                        <div class="song-info">
+                            <p><strong>Judul:</strong> <?php echo htmlspecialchars($row['judul']); ?></p>
+                            <p><strong>Artis:</strong> <?php echo htmlspecialchars($row['artis']); ?></p>
+                            <p><strong>Album:</strong> <?php echo htmlspecialchars($row['album']); ?></p>
+                        </div>
+                        <div class="song-actions">
+                            <button class="button" onclick="loadTrack(<?php echo $i; ?>); audio.play()">Play</button>
+                            <button class="button" onclick="addToQueue(<?php echo $i; ?>); audio.play()">Add To Queue</button>
+                        </div>
+                    </div>
+                <?php
+                    $i++;
+                }
+                ?>
                 </div>
             </div>
         </div>
 
-        <div id="songtables">
-            <h2>Daftar Lagu</h2>
-            <div class="song-cards-container">
-            <?php
-            $i = 0;
-            foreach ($tracks as $row) {
-            ?>
-                <div class="song-card">
-                    <img class="album-cover" src="<?php echo htmlspecialchars($row['cover']); ?>" alt="Cover">
-                    <div class="song-info">
-                        <p><strong>Judul:</strong> <?php echo htmlspecialchars($row['judul']); ?></p>
-                        <p><strong>Artis:</strong> <?php echo htmlspecialchars($row['artis']); ?></p>
-                        <p><strong>Album:</strong> <?php echo htmlspecialchars($row['album']); ?></p>
-                    </div>
-                    <div class="song-actions">
-                        <button class="button" onclick="loadTrack(<?php echo $i; ?>); audio.play()">Play</button>
-                        <button class="button" onclick="addToQueue(<?php echo $i; ?>); audio.play()">Add To Queue</button>
-                    </div>
-                </div>
-            <?php
-                $i++;
-            }
-            ?>
-            </div>
+        <div class="page-actions">
+            <button class="button primary" onclick="window.location.href='store.php'">Beli Lagu</button>
+            <button class="button primary" onclick="window.location.href='logout.php'">Log Out</button>
         </div>
-
-        <button class="button primary" onclick="window.location.href='store.php'">Beli Lagu</button>
-        <button class="button primary" onclick="window.location.href='logout.php'">Log Out</button>
     </div>
 
     <script>
@@ -186,11 +198,32 @@ while($row = mysqli_fetch_assoc($result)) {
         function updateQueueDisplay() {
             const queueList = document.getElementById("queueList");
             queueList.innerHTML = "";
-            queue.forEach(i => {
+            queue.forEach((i, index) => {
                 const li = document.createElement("li");
-                li.textContent = trackList[i].judul + " - " + trackList[i].artis;
+                li.innerHTML = `
+                    <span>${trackList[i].judul} - ${trackList[i].artis}</span>
+                    <div class="queue-item-actions">
+                        <button class="button" onclick="playFromQueue(${index})">▶️</button>
+                        <button class="button" onclick="removeFromQueue(${index})">❌</button>
+                    </div>
+                `;
                 queueList.appendChild(li);
             });
+        }
+
+        function playFromQueue(index) {
+            if (queue[index] !== undefined) {
+                // Remove all items before the selected one
+                queue = queue.slice(index);
+                nextTrack();
+            }
+        }
+
+        function removeFromQueue(index) {
+            if (queue[index] !== undefined) {
+                queue.splice(index, 1);
+                updateQueueDisplay();
+            }
         }
 
         window.onload = () => {
