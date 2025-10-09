@@ -11,8 +11,8 @@
 <nav class="app-header">
   <div class="nav-left">
     <button class="sidebar-toggle">☰</button>
-    <a href="#" class="nav-link">Home</a>
-    <a href="#" class="nav-link">Contact</a>
+    <a href="index.php" class="nav-link">Home</a>
+    <a href="adminPage.php" class="nav-link">Admin Page</a>
   </div>
   <div class="nav-right">
     <button class="nav-icon">🔍</button>
@@ -24,4 +24,16 @@
       <span>Alexander Pierce</span>
     </div>
   </div>
-</nav>
+ </nav>
+ <script>
+ document.addEventListener("DOMContentLoaded", () => {
+   const toggleButton = document.querySelector(".sidebar-toggle");
+   const sidebar = document.querySelector(".sidebar");
+   const mainContent = document.querySelector("main.app-content");
+
+   toggleButton.addEventListener("click", () => {
+     sidebar.classList.toggle("collapsed");
+     mainContent.classList.toggle("collapsed");
+   });
+ });
+ </script>
