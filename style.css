@@ -929,3 +929,129 @@ input[type="submit"]:hover {
         min-width: 100%;
     }
 }
+
+/* Header and Sidebar custom layout */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #11111b;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 1000;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-link, .nav-icon {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-icon:hover {
+  color: #cba6f7;
+}
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 220px;
+  height: calc(100vh - 60px);
+  background: #181825;
+  color: #fff;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  width: 40px;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.sidebar-menu li {
+  margin-bottom: 0.75rem;
+}
+
+.sidebar-menu a {
+  color: #ccc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.sidebar-menu a:hover {
+  color: #cba6f7;
+}
+
+main.app-content {
+  margin-left: 220px;
+  margin-top: 60px;
+  padding: 1.5rem;
+  background: #f7f7f7;
+  flex: 1;
+}
+
+.footer {
+  background: #11111b;
+  color: #ccc;
+  text-align: center;
+  padding: 1rem 0;
+  position: fixed;
+  bottom: 0;
+  left: 220px;
+  right: 0;
+}
+
+/* ===== Layout fix for header + sidebar pages ===== */
+body {
+  margin: 0;
+  padding: 0;
+  background: #f7f7f7;
+  color: #fff;
+  font-family: "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+}
+
+.app-header, .sidebar, .footer, main.app-content {
+  box-sizing: border-box;
+}
+
+/* Sidebar hover & active state improvements */
+.sidebar-menu a.active {
+  color: #cba6f7;
+  font-weight: 600;
+}
+
+.sidebar-menu a:hover {
+  color: #fff;
+  background: #2a2a3b;
+  padding-left: 8px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
