@@ -942,7 +942,7 @@ input[type="submit"]:hover {
   left: 0;
   right: 0;
   height: 60px;
-  background: #11111b;
+  background: #777777;
   color: #fff;
   display: flex;
   justify-content: space-between;
@@ -976,7 +976,7 @@ input[type="submit"]:hover {
   left: 0;
   width: 220px;
   height: calc(100vh - 60px);
-  background: #181825;
+  background: #363636;
   color: #fff;
   padding: 1rem;
   overflow-y: auto;
@@ -1018,7 +1018,7 @@ main.app-content {
 }
 
 .footer {
-  background: #11111b;
+  background: #777777;
   color: #ccc;
   text-align: center;
   padding: 1rem 0;
@@ -1081,4 +1081,15 @@ body {
 main.app-content.collapsed {
   margin-left: 60px;
   transition: margin-left 0.3s ease;
+}
+
+
+#content-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #111111;
+    text-align: center;
+    letter-spacing: -1px;
 }

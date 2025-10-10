@@ -26,7 +26,7 @@ include 'sidebar.php';
 ?>
 
 <main class="app-content" style="padding: 20px;">
-    <h1>Halaman Admin</h1>
+    <h1 id="content-heading">Halaman Admin</h1>
     <div class="admin-actions">
         <a href="manageData.php" class="button primary" style="text-align: center;">Kelola Data <br> (Artis, Album, Lagu)</a>
         <a href="logout.php" class="button secondary">Log Out</a>
