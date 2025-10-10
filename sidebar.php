@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<file name=3 path=/Applications/MAMP/htdocs/Project TA/sidebar.php><aside class="sidebar">
   <div class="sidebar-brand">
     <img src="../assets/img/AdminLTELogo.png" alt="Logo" class="sidebar-logo">
     <span>AdminLTE 4</span>
@@ -10,4 +10,4 @@
     <li><a href="#">Tables</a></li>
     <li><a href="#">Settings</a></li>
   </ul>
-</aside>
+</aside></file>
