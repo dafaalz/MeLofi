@@ -1085,11 +1085,8 @@ main.app-content.collapsed {
 
 
 #content-heading {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
+font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
     font-weight: 600;
-    margin-bottom: 2rem;
     color: #111111;
-    text-align: center;
-    letter-spacing: -1px;
 }

@@ -1,3 +1,7 @@
+<?php 
+  $username = $_SESSION['username'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,16 +16,21 @@
   <div class="nav-left">
     <button class="sidebar-toggle">☰</button>
     <a href="index.php" class="nav-link">Home</a>
-    <a href="adminPage.php" class="nav-link">Admin Page</a>
+    <?php if($_SESSION['level_access'] == 'admin') {
+      echo "<a href=\"adminPage.php\" class=\"nav-link\">Admin Page</a>";
+      };?>
   </div>
   <div class="nav-right">
     <button class="nav-icon">🔍</button>
+    <!--
     <button class="nav-icon">💬</button>
     <button class="nav-icon">🔔</button>
     <button class="nav-icon">⛶</button>
+    -->
     <div class="user-menu">
-      <img src="../assets/img/user2-160x160.jpg" alt="User" class="user-avatar" />
-      <span>Alexander Pierce</span>
+      <!--<img src="../assets/img/user2-160x160.jpg"
+      alt="User" class="user-avatar" /> -->
+      <span><?php echo $username ?></span>
     </div>
   </div>
  </nav>
