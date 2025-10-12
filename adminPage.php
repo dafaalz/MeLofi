@@ -27,12 +27,14 @@ include 'sidebar.php';
 
 <main class="app-content" style="padding: 20px;">
     <h1 id="content-heading">Halaman Admin</h1>
+    <br>
     <div class="admin-actions">
         <a href="manageData.php" class="button primary" style="text-align: center;">Kelola Data <br> (Artis, Album, Lagu)</a>
         <a href="logout.php" class="button secondary">Log Out</a>
     </div>
 
     <section id="songtables">
+        <br>
         <h2>Daftar Lagu</h2>
         <div class="song-cards-container">
         <?php
