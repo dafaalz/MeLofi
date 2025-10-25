@@ -10,13 +10,12 @@ if(!isset($_SESSION['level_access']) OR $_SESSION['level_access'] != 'admin') {
 
 $id = $_GET['id'];
 
-$query = "SELECT filename, cover_album FROM lagu WHERE id_lagu=$id";
+$query = "SELECT filename FROM lagu WHERE id_lagu=$id";
 $result = mysqli_query($connect, $query);
 $row = mysqli_fetch_assoc($result);
 
 if($row) {
     unlink("songs/" . $row['filename']);
-    unlink("cover/" . $row['cover_album']);
 }
 
 
