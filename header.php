@@ -30,9 +30,45 @@
     <button class="nav-icon">⛶</button>
     -->
     <div class="user-menu">
-      <!--<img src="../assets/img/user2-160x160.jpg"
-      alt="User" class="user-avatar" /> -->
-      <span><?php echo $username ?></span>
+        <span class="username"><?php echo $username ?></span>
+        <div class="user-dropdown">
+            <a href="logout.php">Log Out</a>
+        </div>
     </div>
+</style>
+<style>
+.user-menu {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.user-menu .user-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    min-width: 120px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    z-index: 100;
+}
+
+.user-menu .user-dropdown a {
+    display: block;
+    padding: 10px 15px;
+    color: #111;
+    text-decoration: none;
+}
+
+.user-menu .user-dropdown a:hover {
+    background-color: #f0f0f0;
+}
+
+.user-menu:hover .user-dropdown {
+    display: block;
+}
+</style>
   </div>
  </nav>
