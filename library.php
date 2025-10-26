@@ -30,6 +30,25 @@ while($row = mysqli_fetch_assoc($result)) {
     ];
 }
 
+// Query rekomendasi lagu yang belum dimiliki user
+$query_rekomendasi = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, a.cover_album, r.nama_artis
+                      FROM lagu l
+                      JOIN album a ON l.id_album = a.id_album
+                      JOIN artis r ON a.id_artis = r.id_artis
+                      WHERE l.id_lagu NOT IN (
+                          SELECT lagu_id FROM transaksi WHERE user_id = $user
+                      )";
+$result_rekomendasi = mysqli_query($connect, $query_rekomendasi);
+$rekomendasi = [];
+while($row = mysqli_fetch_assoc($result_rekomendasi)) {
+    $rekomendasi[] = [
+        "judul" => $row["judul"],
+        "artis" => $row["nama_artis"],
+        "album" => $row["nama_album"],
+        "cover" => $row["cover_album"]
+    ];
+}
+
 include 'header.php';
 include 'sidebar.php';
 ?>
@@ -112,6 +131,30 @@ include 'sidebar.php';
                     $i++;
                 }
                 ?>
+                </div>
+
+                <hr class="divider">
+                <h2 class="section-heading">Rekomendasi Lagu</h2>
+                <div class="song-cards-container">
+                    <?php
+                    if (count($rekomendasi) > 0) {
+                        foreach ($rekomendasi as $r) {
+                            echo '<div class="song-card rekomendasi">';
+                            echo '<img class="album-cover" src="' . htmlspecialchars($r['cover']) . '" alt="Cover">';
+                            echo '<div class="song-info">';
+                            echo '<p><strong>Judul:</strong> ' . htmlspecialchars($r['judul']) . '</p>';
+                            echo '<p><strong>Artis:</strong> ' . htmlspecialchars($r['artis']) . '</p>';
+                            echo '<p><strong>Album:</strong> ' . htmlspecialchars($r['album']) . '</p>';
+                            echo '</div>';
+                            echo '<div class="song-actions">';
+                            echo '<button class="button primary" onclick="window.location.href=\'store.php\'">Lihat di Store</button>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<p>Tidak ada rekomendasi lagu saat ini.</p>';
+                    }
+                    ?>
                 </div>
             </div>
         </div>
