@@ -17,7 +17,7 @@ include 'sidebar.php';
     
     <div class="song-cards-container">
         <?php
-        $query = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, a.cover_album, ar.nama_artis 
+        $query = "SELECT l.id_lagu, l.judul, l.filename, a.id_album, a.nama_album, a.cover_album, ar.id_artis, ar.nama_artis 
                   FROM lagu l 
                   JOIN album a ON l.id_album = a.id_album 
                   JOIN artis ar ON a.id_artis = ar.id_artis 
@@ -33,13 +33,15 @@ include 'sidebar.php';
             $filename = "songs/" . htmlspecialchars($row['filename']);
             $laguId = $row['id_lagu'];
             $audioId = "audio_" . $laguId;
+            $id_artis = $row['id_artis'];
+            $id_album = $row['id_album'];
 
             echo "<div class='song-card'>";
                 echo "<img class='album-cover' src='$cover' alt='Cover Album'>";
                 echo "<div class='song-info'>";
                     echo "<p><strong>Judul:</strong> $judul</p>";
-                    echo "<p><strong>Artis:</strong> $artis</p>";
-                    echo "<p><strong>Album:</strong> $album</p>";
+                    echo "<p><strong>Artis:</strong> <a href='artisDetail.php?id=$id_artis'>$artis</a></p>";
+                    echo "<p><strong>Album:</strong> <a href='albumDetail.php?id=$id_album'>$album</a></p>";
                 echo "</div>";
                 echo "<div class='song-actions'>";
                     echo "<audio id='$audioId' src='$filename'></audio>";

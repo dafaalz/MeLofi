@@ -5,7 +5,7 @@ if (!isset($_SESSION['username']) OR ($_SESSION['level_access'] != 'admin')) {
     exit();
 }
 
-$query = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, ar.nama_artis, a.cover_album
+$query = "SELECT l.id_lagu, l.judul, l.filename, a.id_album, a.nama_album, ar.id_artis, ar.nama_artis, a.cover_album
           FROM lagu l
           JOIN album a ON l.id_album = a.id_album
           JOIN artis ar ON a.id_artis = ar.id_artis";
@@ -41,7 +41,9 @@ include 'sidebar.php';
         mysqli_data_seek($result, 0);
         while($row = mysqli_fetch_assoc($result)) {
             $judul = htmlspecialchars($row['judul']);
+            $artisId = $row['id_artis'];
             $artis = htmlspecialchars($row['nama_artis']);
+            $albumId = $row['id_album'];
             $album = htmlspecialchars($row['nama_album']);
             $cover = htmlspecialchars($row['cover_album']);
             $filename = htmlspecialchars($row['filename']);
@@ -51,8 +53,8 @@ include 'sidebar.php';
                 echo "<img src='$cover' alt='Cover Album $album' class='album-cover'>";
                 echo "<div class='song-info'>";
                     echo "<p><strong>Judul:</strong> $judul</p>";
-                    echo "<p><strong>Artis:</strong> $artis</p>";
-                    echo "<p><strong>Album:</strong> $album</p>";
+                    echo "<p><strong>Artis:</strong> <a href='artisDetail.php?id=$artisId'>$artis</a></p>";
+                    echo "<p><strong>Album:</strong> <a href='albumDetail.php?id=$albumId'>$album</a></p>";
                 echo "</div>";
                 echo "<div class='song-actions'>";
                     echo "<audio id='$audioId' src='songs/$filename' aria-label='Audio preview for $judul' style='display:none;'></audio>";

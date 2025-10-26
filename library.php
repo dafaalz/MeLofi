@@ -9,7 +9,7 @@ if(!isset($_SESSION['user_id'])) {
 
 $user = intval($_SESSION['user_id']);
 
-$query = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, a.cover_album, r.nama_artis
+$query = "SELECT l.id_lagu, l.judul, l.filename, a.id_album, a.nama_album, a.cover_album, r.id_artis, r.nama_artis
           FROM lagu l
           JOIN album a ON l.id_album = a.id_album
           JOIN artis r ON a.id_artis = r.id_artis
@@ -26,12 +26,14 @@ while($row = mysqli_fetch_assoc($result)) {
         "artis" => $row["nama_artis"],
         "album" => $row["nama_album"],
         "url" => "songs/" . $row["filename"],
-        "cover" => $row["cover_album"]
+        "cover" => $row["cover_album"],
+        "id_artis" => $row["id_artis"],
+        "id_album" => $row["id_album"]
     ];
 }
 
 // Query rekomendasi lagu yang belum dimiliki user
-$query_rekomendasi = "SELECT l.id_lagu, l.judul, l.filename, a.nama_album, a.cover_album, r.nama_artis
+$query_rekomendasi = "SELECT l.id_lagu, l.judul, l.filename, a.id_album, a.nama_album, a.cover_album, r.id_artis, r.nama_artis
                       FROM lagu l
                       JOIN album a ON l.id_album = a.id_album
                       JOIN artis r ON a.id_artis = r.id_artis
@@ -45,7 +47,9 @@ while($row = mysqli_fetch_assoc($result_rekomendasi)) {
         "judul" => $row["judul"],
         "artis" => $row["nama_artis"],
         "album" => $row["nama_album"],
-        "cover" => $row["cover_album"]
+        "cover" => $row["cover_album"],
+        "id_artis" => $row["id_artis"],
+        "id_album" => $row["id_album"]
     ];
 }
 
@@ -119,8 +123,8 @@ include 'sidebar.php';
                         <img class="album-cover" src="<?php echo htmlspecialchars($row['cover']); ?>" alt="Cover">
                         <div class="song-info">
                             <p><strong>Judul:</strong> <?php echo htmlspecialchars($row['judul']); ?></p>
-                            <p><strong>Artis:</strong> <?php echo htmlspecialchars($row['artis']); ?></p>
-                            <p><strong>Album:</strong> <?php echo htmlspecialchars($row['album']); ?></p>
+                            <p><strong>Artis:</strong> <a href="artisDetail.php?id=<?= $row['id_artis'] ?>"><?= htmlspecialchars($row['artis']) ?></a></p>
+                            <p><strong>Album:</strong> <a href="albumDetail.php?id=<?= $row['id_album'] ?>"><?= htmlspecialchars($row['album']) ?></a></p>
                         </div>
                         <div class="song-actions">
                             <button class="button" onclick="loadTrack(<?php echo $i; ?>); audio.play()">Play</button>
@@ -143,8 +147,8 @@ include 'sidebar.php';
                             echo '<img class="album-cover" src="' . htmlspecialchars($r['cover']) . '" alt="Cover">';
                             echo '<div class="song-info">';
                             echo '<p><strong>Judul:</strong> ' . htmlspecialchars($r['judul']) . '</p>';
-                            echo '<p><strong>Artis:</strong> ' . htmlspecialchars($r['artis']) . '</p>';
-                            echo '<p><strong>Album:</strong> ' . htmlspecialchars($r['album']) . '</p>';
+                            echo '<p><strong>Artis:</strong> <a href="artisDetail.php?id=' . $r['id_artis'] . '">' . htmlspecialchars($r['artis']) . '</a></p>';
+                            echo '<p><strong>Album:</strong> <a href="albumDetail.php?id=' . $r['id_album'] . '">' . htmlspecialchars($r['album']) . '</a></p>';
                             echo '</div>';
                             echo '<div class="song-actions">';
                             echo '<button class="button primary" onclick="window.location.href=\'store.php\'">Lihat di Store</button>';
