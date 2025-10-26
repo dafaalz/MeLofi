@@ -60,7 +60,7 @@ include 'sidebar.php';
                     echo "<audio id='$audioId' src='songs/$filename' aria-label='Audio preview for $judul' style='display:none;'></audio>";
                     echo "<button class='button primary' onclick=\"playPauseTrack('$audioId', this)\">Play</button> ";
                     echo "<a class='button secondary' href='edit.php?id=$laguId'>Edit</a> ";
-                    echo "<a class='button danger' href='delete.php?id=$laguId'>Hapus</a>";
+                    echo "<a class='button danger' href='delete.php?id=$laguId' onclick=\"return confirm('Apakah Anda yakin ingin menghapus lagu ini?');\">Hapus</a>";
                 echo "</div>";
             echo "</div>";
         }
