@@ -30,17 +30,11 @@ while($row = mysqli_fetch_assoc($result)) {
     ];
 }
 
+include 'header.php';
+include 'sidebar.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<main class="app-content">
     <div id="container">
         <div id="header">
             <h2>Library</h2>
@@ -271,5 +265,6 @@ while($row = mysqli_fetch_assoc($result)) {
             return min + ":" + (sec < 10 ? "0" : "") + sec;
         }
     </script>
-</body>
-</html>
+</main>
+
+<?php include 'footer.php'; ?>

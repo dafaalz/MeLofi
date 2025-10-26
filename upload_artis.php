@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (move_uploaded_file($_FILES['foto_profil']['tmp_name'], $target_file)) {
             $foto_profil = $target_file; // simpan path ke DB
         } else {
-            echo "❌ Gagal upload foto profil.";
+            echo "<script>alert('❌ Gagal upload foto profil.'); window.location='manageData.php';</script>";
             exit;
         }
     }
@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $query = "INSERT INTO artis (nama_artis, foto_profil, deskripsi)
               VALUES ('$nama_artis', " . ($foto_profil ? "'$foto_profil'" : "NULL") . ", '$deskripsi')";
     if (mysqli_query($connect, $query)) {
-        echo "✅ Artis berhasil ditambahkan. <a href='manageData.php'>Kembali</a>";
+        echo "<script>alert('✅ Artis berhasil ditambahkan.'); window.location='manageData.php';</script>";
     } else {
-        echo "❌ Gagal menambahkan artis: " . mysqli_error($connect);
+        echo "<script>alert('❌ Gagal menambahkan artis: " . mysqli_error($connect) . "'); window.location='manageData.php';</script>";
     }
 }
 ?>
