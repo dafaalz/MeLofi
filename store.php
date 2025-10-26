@@ -6,33 +6,13 @@ if(!isset($_SESSION['username'])) {
     exit();
 }
 
-
 $user_id = $_SESSION['user_id'];
+
+include 'header.php';
+include 'sidebar.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Musik</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<script>
-    function buySong(id) {
-        fetch('buy.php', {
-            method: 'POST',
-            body: new URLSearchParams({ lagu_id: id })
-        }).then(r => r.json())
-        .then(data => {
-            if(data.success) {
-                alert("Berhasil dibeli!")
-                location.reload()
-            }
-        })
-    }
-</script>
-<body>
+<main class="app-content">
     <h2>Toko Musik - Pilih Lagu untuk Dibelli <button class="button primary" onclick="window.location.href='library.php'">Kembali ke Library</button> </h2>
     
     <div class="song-cards-container">
@@ -97,5 +77,6 @@ $user_id = $_SESSION['user_id'];
             }
         }
     </script>
-</body>
-</html>
+</main>
+
+<?php include 'footer.php'; ?>

@@ -17,15 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = mysqli_query($connect, $query);
 
             if ($result) {
-                echo "✅ Lagu berhasil diupload dan disimpan. <a href='manageData.php'>kembali</a>";
+                echo "<script>alert('✅ Lagu berhasil diupload dan disimpan.'); window.location='manageData.php';</script>";
             } else {
-                echo "❌ Gagal menyimpan lagu ke database. <a href='manageData.php'>kembali</a>";
+                echo "<script>alert('❌ Gagal menyimpan lagu ke database.'); window.location='manageData.php';</script>";
             }
         } else {
-            echo "❌ Gagal memindahkan file lagu.";
+            echo "<script>alert('❌ Gagal memindahkan file lagu.'); window.location='manageData.php';</script>";
         }
     } else {
-        echo "❌ Terjadi kesalahan saat upload file.";
+        echo "<script>alert('❌ Terjadi kesalahan saat upload file.'); window.location='manageData.php';</script>";
     }
 }
 ?>

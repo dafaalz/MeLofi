@@ -19,6 +19,8 @@
     <?php if($_SESSION['level_access'] == 'admin') {
       echo "<a href=\"adminPage.php\" class=\"nav-link\">Admin Page</a>";
       };?>
+    <a href="library.php" class="nav-link">Library</a>
+    <a href="store.php" class="nav-link">Store</a>
   </div>
   <div class="nav-right">
     <button class="nav-icon">🔍</button>

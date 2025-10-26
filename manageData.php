@@ -12,13 +12,11 @@ $album = mysqli_query($connect, "SELECT album.*, artis.nama_artis
                                  FROM album
                                  JOIN artis ON album.id_artis = artis.id_artis");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Data</title>
-    <link rel="stylesheet" href="style.css">
+<?php
+// header.php dan sidebar.php sudah include style.css dan struktur wrapper
+include 'header.php';
+include 'sidebar.php';
+?>
     <style>
         /* Additional styles specific to this page */
         .manage-data-container {
@@ -219,9 +217,8 @@ $album = mysqli_query($connect, "SELECT album.*, artis.nama_artis
             font-style: italic;
         }
     </style>
-</head>
-<body>
-    <header>
+    <!-- Main Content -->
+    <main class="app-content" style="padding: 20px;">
         <div class="header-content">
             <h1>Kelola Data Musik</h1>
             <div class="header-actions">
@@ -229,9 +226,6 @@ $album = mysqli_query($connect, "SELECT album.*, artis.nama_artis
                 <a href="logout.php" class="button secondary">Log Out</a>
             </div>
         </div>
-    </header>
-    
-    <main>
         <div class="manage-data-container">
             <section class="form-section">
                 <h2>Tambah Lagu</h2>
@@ -341,7 +335,6 @@ $album = mysqli_query($connect, "SELECT album.*, artis.nama_artis
             </section>
         </div>
     </main>
-
     <script>
         // Load album berdasarkan artis
         document.getElementById('selectArtis').addEventListener('change', function() {
@@ -418,5 +411,4 @@ $album = mysqli_query($connect, "SELECT album.*, artis.nama_artis
             });
         });
     </script>
-</body>
-</html>
+<?php include 'footer.php'; ?>
