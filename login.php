@@ -4,10 +4,12 @@ ini_set('display_startup_errors', 1);
 include "connect.php";
 session_start();
 
-$username = $_POST['username'];
-$password = md5($_POST['password']);
+// Sanitize inputs
+$username = mysqli_real_escape_string($connect, $_POST['username']);
+$password = md5($_POST['password']); // Consider using password_hash() in production
 
 if(isset($_POST['Login'])) {
+    // Login logic
     $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
     $result = mysqli_query($connect, $query);
 
@@ -17,10 +19,11 @@ if(isset($_POST['Login'])) {
         $_SESSION['level_access'] = $row['level_access'];
         $_SESSION['user_id'] = $row['id_user'];
         
+        // Redirect based on user level
         if($row['level_access'] == 'admin') {
             header("Location: adminPage.php");
             exit();
-        } else if ($row['level_access'] == 'user') {
+        } else {
             header("Location: library.php");
             exit();
         }
@@ -28,27 +31,45 @@ if(isset($_POST['Login'])) {
         header("Location: index.php?error=login+gagal");
         exit();
     }
+    
 } else if (isset($_POST['Register'])) {
+    // Registration logic
+    
+    // Validate inputs
+    if (empty($username) || empty($_POST['password'])) {
+        header("Location: index.php?error=field+kosong");
+        exit();
+    }
+    
+    // Check if username already exists
     $checkQuery = "SELECT * FROM users WHERE username = '$username'";
     $checkResult = mysqli_query($connect, $checkQuery);
 
     if($checkResult && mysqli_num_rows($checkResult) > 0) {
         header("Location: index.php?error=username+digunakan");
         exit();
-    } else {
-        $insertQuery = "INSERT INTO users (`id_user`, `username`, `password`, `level_access`) VALUES (NULL, '$username', '$password', 'user')";
-        $insertResult = mysqli_query($connect, $insertQuery);
-
-        if($insertResult) {
-            echo "<h2>Berhasil menambahkan user $username pada data user. Silahkan <a href='index.php'>login kembali</a>.</h2>";
-        } else {
-            header("Location: index.php?error=gagal+register");
-            exit();
-        }
     }
+    
+    // Insert new user
+    $insertQuery = "INSERT INTO users (username, password, level_access) VALUES ('$username', '$password', 'user')";
+    $insertResult = mysqli_query($connect, $insertQuery);
+
+    if($insertResult) {
+        // Auto-login after registration
+        $userId = mysqli_insert_id($connect);
+        $_SESSION['username'] = $username;
+        $_SESSION['level_access'] = 'user';
+        $_SESSION['user_id'] = $userId;
+        
+        header("Location: library.php?success=registration+successful");
+        exit();
+    } else {
+        header("Location: index.php?error=gagal+register");
+        exit();
+    }
+    
 } else {
-    header("Location: index.php?error=login+gagal");
-    echo "AC";
+    header("Location: index.php?error=invalid+request");
     exit();
 }
 ?>
