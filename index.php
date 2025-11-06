@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1 style="margin: 1%;, ">Melo-fi</h1>
+        <h1 style="margin: 1%, ">Melo-fi</h1>
     </header>
 
     <main>
