@@ -62,6 +62,14 @@ include 'sidebar.php';
     table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
     table th, table td { border: 1px solid #eaeaea; padding: 0.5rem; text-align: left; }
     table img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+    .table-controls {
+        margin-bottom: 10px;
+    }
+    .pagination {
+        margin-top: 10px;
+        display: flex;
+        gap: 0.5rem;
+    }
 </style>
 
 <main class="app-content" style="padding: 20px;">
@@ -174,6 +182,9 @@ include 'sidebar.php';
         <!-- DAFTAR ARTIS -->
         <section class="form-section">
             <h2>Daftar Artis</h2>
+            <div class="table-controls">
+              <input type="text" id="searchArtis" placeholder="Cari artis..." class="form-control" style="margin-bottom:10px;">
+            </div>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -199,11 +210,26 @@ include 'sidebar.php';
                     </tbody>
                 </table>
             </div>
+            <div class="pagination">
+              <button id="prevArtis" class="btn-secondary">Prev</button>
+              <button id="nextArtis" class="btn-secondary">Next</button>
+            </div>
         </section>
 
         <!-- DAFTAR ALBUM -->
         <section class="form-section">
             <h2>Daftar Album</h2>
+            <div class="table-controls">
+              <input type="text" id="searchAlbum" placeholder="Cari album..." class="form-control" style="margin-bottom:10px;">
+              <select id="filterArtisAlbum" class="form-control" style="margin-bottom:10px;">
+                <option value="">-- Filter berdasarkan artis --</option>
+                <?php 
+                mysqli_data_seek($artisList, 0);
+                while($ar = mysqli_fetch_assoc($artisList)) { ?>
+                  <option value="<?= htmlspecialchars($ar['nama_artis']) ?>"><?= htmlspecialchars($ar['nama_artis']) ?></option>
+                <?php } ?>
+              </select>
+            </div>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -230,6 +256,10 @@ include 'sidebar.php';
                         <?php } ?>
                     </tbody>
                 </table>
+            </div>
+            <div class="pagination">
+              <button id="prevAlbum" class="btn-secondary">Prev</button>
+              <button id="nextAlbum" class="btn-secondary">Next</button>
             </div>
         </section>
     </div>
@@ -266,6 +296,47 @@ document.querySelectorAll('input[type="file"]').forEach(input => {
         display.textContent = this.files[0] ? this.files[0].name : 'No file chosen';
     });
 });
+
+function setupTableSearchPagination(tableSelector, searchInputId, prevBtnId, nextBtnId, rowsPerPage = 5, filterSelector = null) {
+  const table = document.querySelector(tableSelector);
+  const rows = table.querySelectorAll('tbody tr');
+  const searchInput = document.getElementById(searchInputId);
+  const prevBtn = document.getElementById(prevBtnId);
+  const nextBtn = document.getElementById(nextBtnId);
+  const filter = filterSelector ? document.getElementById(filterSelector) : null;
+  let currentPage = 1;
+
+  function renderTable() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filterTerm = filter ? filter.value.toLowerCase() : "";
+    const filteredRows = Array.from(rows).filter(row => {
+      const text = row.innerText.toLowerCase();
+      const matchesSearch = text.includes(searchTerm);
+      const matchesFilter = !filterTerm || text.includes(filterTerm);
+      return matchesSearch && matchesFilter;
+    });
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    rows.forEach(row => row.style.display = "none");
+    filteredRows.slice(start, end).forEach(row => row.style.display = "");
+
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+  }
+
+  searchInput.addEventListener('input', () => { currentPage = 1; renderTable(); });
+  if (filter) filter.addEventListener('change', () => { currentPage = 1; renderTable(); });
+  prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); }});
+  nextBtn.addEventListener('click', () => { currentPage++; renderTable(); });
+
+  renderTable();
+}
+
+// Inisialisasi
+setupTableSearchPagination('section:nth-of-type(4) table', 'searchArtis', 'prevArtis', 'nextArtis');
+setupTableSearchPagination('section:nth-of-type(5) table', 'searchAlbum', 'prevAlbum', 'nextAlbum', 5, 'filterArtisAlbum');
 </script>
 
 <?php include 'footer.php'; ?>
