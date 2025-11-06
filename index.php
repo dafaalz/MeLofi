@@ -8,11 +8,11 @@
 </head>
 <body>
     <header>
-        <h1>Melo-fi</h1>
+        <h1 style="margin: 1%;, ">Melo-fi</h1>
     </header>
 
     <main>
-        <div id="container">
+        <div id="container" style="max-width: 80%;">
             <div id="mainbox">
                 <h2>Login ke Akun Anda</h2><br>
                 <form action="login.php" method="post" autocomplete="on" novalidate>
