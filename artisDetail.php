@@ -33,41 +33,27 @@ $lagu_result = mysqli_query($connect, "
 
         <hr class="divider">
         <h2>Album oleh <?= htmlspecialchars($artis_data['nama_artis']) ?></h2>
-        <div class="album-list">
+        <div class="song-cards-container">
             <?php while ($album = mysqli_fetch_assoc($album_result)) { ?>
-                <div class="album-card" onclick="window.location='albumDetail.php?id=<?= $album['id_album'] ?>'">
-                    <img src="<?= htmlspecialchars($album['cover_album']) ?>" alt="Cover Album" class="album-cover">
-                    <p class="album-title"><?= htmlspecialchars($album['nama_album']) ?></p>
+                <div class="song-card" onclick="window.location='albumDetail.php?id=<?= $album['id_album'] ?>'">
+                    <img src="<?= htmlspecialchars($album['cover_album'] ?? 'default.jpg') ?>" alt="Cover Album" class="album-cover">
+                    <div class="song-info">
+                        <p><strong><?= htmlspecialchars($album['nama_album']) ?></strong></p>
+                    </div>
                 </div>
             <?php } ?>
         </div>
 
         <hr class="divider">
         <h2>Lagu oleh <?= htmlspecialchars($artis_data['nama_artis']) ?></h2>
-        <div class="song-cards-container">
+        <div class="song-list">
             <?php while ($lagu = mysqli_fetch_assoc($lagu_result)) { ?>
                 <div class="song-card">
-                    <img src="<?= htmlspecialchars($lagu['cover_album'] ?? 'default.jpg') ?>" alt="Cover Album" class="album-cover">
-                    <div class="song-info">
-                        <p><strong><?= htmlspecialchars($lagu['judul']) ?></strong></p>
-                        <p><?= htmlspecialchars($lagu['nama_album']) ?></p>
-                    </div>
-                    <div class="song-actions">
-                        <button class="button btn-primary btn-sm" onclick="playPreview('<?= htmlspecialchars($lagu['file_lagu']) ?>')">Preview</button>
-                    </div>
+                    <p><strong><?= htmlspecialchars($lagu['judul']) ?></strong> — <?= htmlspecialchars($lagu['nama_album']) ?></p>
                 </div>
             <?php } ?>
         </div>
     </div>
 </main>
-
-
-<script>
-function playPreview(file) {
-    const audio = new Audio(file);
-    audio.play();
-    setTimeout(() => audio.pause(), 30000); // 30 detik preview
-}
-</script>
 
 <?php include 'footer.php'; ?>
